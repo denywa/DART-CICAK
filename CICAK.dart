@@ -91,7 +91,7 @@ class Game {
 
   void update() {
     cicak.move(food);
-    if (cicak.body.first.x == food.x && cicak.body.first.y == food.y) {
+    if (cicak.body.last.x == food.x && cicak.body.last.y == food.y) {
       cicak.grow();
       generateFood();
     }
@@ -101,7 +101,7 @@ class Game {
       segment.y = (segment.y + height) % height;
     }
 
-    Point head = cicak.body.first;
+    Point head = cicak.body.last;
     if (head.x == 0 || head.x == width - 1) {
       if (cicak.direction == 'left') {
         cicak.direction = 'right';
@@ -128,7 +128,7 @@ class Game {
     
     // Draw cicak
     List<String> cicakShape = cicak.getShape();
-    Point head = cicak.body.first;
+    Point head = cicak.body.last;
     int offsetX = cicak.direction == 'left' || cicak.direction == 'right' ? cicakShape[0].length ~/ 2 : 2;
     int offsetY = cicak.direction == 'up' || cicak.direction == 'down' ? cicakShape.length ~/ 2 : 1;
     
@@ -143,7 +143,7 @@ class Game {
     }
     
     // Render buffer
-    stdout.write('\x1B[H'); // Move cursor to top-left corner
+    stdout.write('\x1B[H'); 
     for (var row in buffer) {
       stdout.writeln(row.join());
     }
@@ -156,7 +156,7 @@ class Game {
 void main() async {
   Game game = Game();
   
-  Duration frameDuration = Duration(milliseconds: 200);
+  Duration frameDuration = Duration(milliseconds: 100);
   Stopwatch stopwatch = Stopwatch()..start();
   
   while (true) {
